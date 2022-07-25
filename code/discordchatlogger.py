@@ -6,10 +6,10 @@ colorama.init(convert=True)
 def send_json_request(ws, request):
     try:
         ws.send(json.dumps(request))
-    except Exception as e:
-        print(f"{colorama.Fore.RED}An error occured: {str(e)}")
-        time.sleep(.1)
-        input(f"Press any key to exit the program...{colorama.Fore.RESET} ")
+    except Exception as e: 
+        print(f"{colorama.Fore.RED}An error occured: {str(e)}, this is a problem on Discord's end, wait a minute and turn on the app again.")
+        time.sleep(0.1)
+        input(f"\n{colorama.Fore.RESET}Press any key to exit the program...")
         exit()
 
 def receive_json_response(ws):
@@ -18,8 +18,8 @@ def receive_json_response(ws):
         if response:
             return json.loads(response)
     except Exception as e: 
-        print(f"{colorama.Fore.RED}An error occured: {str(e)}")
-        time.sleep(.1)
+        print(f"{colorama.Fore.RED}An error occured: {str(e)}, this is a problem on Discord's end, wait a minute and turn on the app again.")
+        time.sleep(0.1)
         input(f"\n{colorama.Fore.RESET}Press any key to exit the program...")
         exit()
     
@@ -36,7 +36,7 @@ def main():
  | |  | || | | (___ | |   | |  | | |__) | |  | | | |    | |__| |  /  \  | |    | |   | |  | | |  __| |  __| |__  | |__) |
  | |  | || |  \___ \| |   | |  | |  _  /| |  | | | |    |  __  | / /\ \ | |    | |   | |  | | | |_ | | |_ |  __| |  _  / 
  | |__| || |_ ____) | |___| |__| | | \ \| |__| | | |____| |  | |/ ____ \| |    | |___| |__| | |__| | |__| | |____| | \ \ 
- |_____/_____|_____/ \_____\____/|_|  \_\_____/   \_____|_|  |_/_/    \_\_|    |______\____/ \_____|\_____|______|_|  \_\
+ |_____/_____|_____/ \_____\____/|_|  \_\_____/   \_____|_|  |_/_/    \_\_|    |______\____/ \_____|\_____|______|_|  \_|
 \n\n {colorama.Fore.RESET}Made by Crystallek#3348\n""")
 
     ws = websocket.WebSocket()
@@ -56,6 +56,13 @@ def main():
     heartbeat_interval = event["d"]["heartbeat_interval"] / 1000 - 5
     ids = {}
 
+    guilds = []
+    guildsRead = open("data/guildstolog.txt", "r").readlines()
+
+    for guild in guildsRead:
+        guilds.append(guild.replace("\n", ""))
+    del guildsRead
+    
     threading.Thread(target=heartbeat, args=[ws, heartbeat_interval], daemon=True).start()
     send_json_request(ws, payload_event)
     receive_json_response(ws)
@@ -67,50 +74,64 @@ def main():
         timeNow = time.strftime("%d.%m.%Y @ %H:%M:%S")
         try: 
             try:
-                if event['d']['guild_id'] in ids:
-                    response  = ids.get(event['d']['guild_id'])
-                else:
-                    response = json.loads(requests.get(f"https://discord.com/api/v9/guilds/{event['d']['guild_id']}/preview", headers=payload_guild).text)['name']
-                    ids[event['d']['guild_id']] = response
-                
-                if str(event['d']['attachments']) == "[]": 
-                    print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}".replace("\n", ""))
-                else: 
-                    print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']} {colorama.Fore.YELLOW}| {event['d']['attachments'][0]['url']}".replace("\n", ""))
+                if event['d']['guild_id'] in guilds or guilds[0] == "all":
+                    if event['d']['guild_id'] in ids:
+                        response  = ids.get(event['d']['guild_id'])
+                    else:
+                        response = json.loads(requests.get(f"https://discord.com/api/v9/guilds/{event['d']['guild_id']}/preview", headers=payload_guild).text)['name']
+                        ids[event['d']['guild_id']] = response
+                    
+                    try:
+                        event['d']['embeds'][0]['fields']
+                        print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}{colorama.Fore.YELLOW}| Embed is not supported at the moment.".replace("\n", ""))
+                    except:
+                        if str(event['d']['attachments']) == "[]": 
+                            print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}".replace("\n", ""))
+                        else: 
+                            print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']} {colorama.Fore.YELLOW}| {event['d']['attachments'][0]['url']}".replace("\n", ""))
 
-                with open(f"data/log{_time}.txt", "a", encoding="utf-8") as f:
-                    if str(event['d']['attachments']) == "[]": 
-                        f.write(emoji.demojize(f"{response} | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']}\n"))
-                    else: 
-                        f.write(emoji.demojize(f"{response} | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']} | {event['d']['attachments'][0]['url']}\n"))
-                continue
+                        with open(f"data/log{_time}.txt", "a", encoding="utf-8") as f:
+                            if str(event['d']['attachments']) == "[]": 
+                                f.write(emoji.demojize(f"{response} | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']}\n"))
+                            else: 
+                                f.write(emoji.demojize(f"{response} | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']} | {event['d']['attachments'][0]['url']}\n"))
+                        continue
 
             except:
                 try:
-                    if str(event['d']['attachments']) == "[]": 
-                        print(f"{colorama.Fore.BLUE}{event['d']['guild_id']} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}".replace("\n", ""))
-                    else: 
-                        print(f"{colorama.Fore.BLUE}{event['d']['guild_id']} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']} {colorama.Fore.YELLOW}| {event['d']['attachments'][0]['url']}".replace("\n", ""))
+                    if event['d']['guild_id'] in guilds or guilds[0] == "all":
+                        try:
+                            event['d']['embeds'][0]['fields']
+                            print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}{colorama.Fore.YELLOW}| Embed is not supported at the moment.".replace("\n", ""))
+                        except:
+                            if str(event['d']['attachments']) == "[]": 
+                                print(f"{colorama.Fore.BLUE}{event['d']['guild_id']} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}".replace("\n", ""))
+                            else: 
+                                print(f"{colorama.Fore.BLUE}{event['d']['guild_id']} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']} {colorama.Fore.YELLOW}| {event['d']['attachments'][0]['url']}".replace("\n", ""))
 
-                    with open(f"data/log{_time}.txt", "a", encoding="utf-8") as f:
-                        if str(event['d']['attachments']) == "[]": 
-                            f.write(emoji.demojize(f"{event['d']['guild_id']} | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']}\n"))
-                        else: 
-                            f.write(emoji.demojize(f"{event['d']['guild_id']} | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']} | {event['d']['attachments'][0]['url']}\n"))
-                    continue
+                            with open(f"data/log{_time}.txt", "a", encoding="utf-8") as f:
+                                if str(event['d']['attachments']) == "[]": 
+                                    f.write(emoji.demojize(f"{event['d']['guild_id']} | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']}\n"))
+                                else: 
+                                    f.write(emoji.demojize(f"{event['d']['guild_id']} | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']} | {event['d']['attachments'][0]['url']}\n"))
+                            continue
 
                 except:
-                    if str(event['d']['attachments']) == "[]": 
-                        print(f"{colorama.Fore.BLUE}DMS | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}".replace("\n", ""))
-                    else: 
-                        print(f"{colorama.Fore.BLUE}DMS | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']} {colorama.Fore.YELLOW}| {event['d']['attachments'][0]['url']}".replace("\n", ""))
-
-                    with open(f"data/log{_time}.txt", "a", encoding="utf-8") as f:
+                    try:
+                        event['d']['embeds'][0]['fields']
+                        print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}{colorama.Fore.YELLOW}| Embed is not supported at the moment.".replace("\n", ""))
+                    except:
                         if str(event['d']['attachments']) == "[]": 
-                            f.write(emoji.demojize(f"DMS | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']}\n"))
+                            print(f"{colorama.Fore.BLUE}DMS | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}".replace("\n", ""))
                         else: 
-                            f.write(emoji.demojize(f"DMS | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']} | {event['d']['attachments'][0]['url']}\n"))
-                    continue
+                            print(f"{colorama.Fore.BLUE}DMS | {timeNow} | {colorama.Fore.RED}{unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']} {colorama.Fore.YELLOW}| {event['d']['attachments'][0]['url']}".replace("\n", ""))
+
+                        with open(f"data/log{_time}.txt", "a", encoding="utf-8") as f:
+                            if str(event['d']['attachments']) == "[]": 
+                                f.write(emoji.demojize(f"DMS | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']}\n"))
+                            else: 
+                                f.write(emoji.demojize(f"DMS | {timeNow} | {unidecode.unidecode(event['d']['author']['username'])}#{event['d']['author']['discriminator']}: {event['d']['content']} | {event['d']['attachments'][0]['url']}\n"))
+                        continue
         except: 
             pass
 
