@@ -1,4 +1,4 @@
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/Crystallek/discord-chat-logger.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Crystallek/discord-chat-logger/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Crystallek/discord-chat-logger.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Crystallek/discord-chat-logger/context:python)
 
 **discord-chat-logger**
 
