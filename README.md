@@ -36,7 +36,7 @@ This is a real-time discord chat logger, where you can have all chats in one pla
  
  A: Put something random to guildstolog.txt file, doesn't matter what (but it mustn't be empty!)
  
- Q: I'm getting error <random-error>. How do I fix it?
+ Q: I'm getting error (insert random error here). How do I fix it?
   
  A: This is mainly problem on Discord's end and its rate limits or you entered the wrong token (insert the token without an apostrophe, thanks). Just wait a minute and turn it on again. 
   
@@ -44,7 +44,7 @@ This is a real-time discord chat logger, where you can have all chats in one pla
   
  A: Again, have you removed the apostrophes?
  
-### Working Versions
+### Working?
 
 | Version | Working            |
 | ------- | ------------------ |
