@@ -4,10 +4,6 @@
 
 This is a real-time discord chat logger, where you can have all chats in one place and have them logged in the file for future use.
 
-## 1.0.1 UPDATE
-  - Group filtering (you can choose which groups will be logged)
-  - Embed fix (before it crashed the app, not it says that embeds are not supported)
-
 ## What does it do?
   - It saves the data from the discord gateway to the file
 
@@ -43,13 +39,6 @@ This is a real-time discord chat logger, where you can have all chats in one pla
  Q: Guild ID filtering doesn't work!
   
  A: Again, have you removed the apostrophes?
- 
-### Working?
-
-| Version | Working            |
-| ------- | ------------------ |
-|   1.0.1    | :white_check_mark: |
-|   1.0.0    | :white_check_mark: |
  </h6>
  
  ## Contact us
