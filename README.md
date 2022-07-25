@@ -1,3 +1,5 @@
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/Crystallek/discord-chat-logger.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Crystallek/discord-chat-logger/alerts/)
+
 **discord-chat-logger**
 
 This is a real-time discord chat logger, where you can have all chats in one place and have them logged in the file for future use.
