@@ -1,4 +1,4 @@
-discord-chat-logger
+**discord-chat-logger**
 
 This is a real-time discord chat logger, where you can have all chats in one place and have them logged in the file for future use.
 
