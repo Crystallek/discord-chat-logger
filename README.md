@@ -40,7 +40,13 @@ This is a real-time discord chat logger, where you can have all chats in one pla
   
  A: Again, have you removed the apostrophes?
  </h6>
- 
+
+## TODO (in this order)
+  - better gateway log in on start (it sucks)
+  - embed support
+  
+
+
  ## Contact us
 > Join our [Discord](https://aimforum.ml/freesploitdis.html)
  
