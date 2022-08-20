@@ -19,9 +19,7 @@ This is a real-time discord chat logger, where you can have all chats in one pla
   - time
   - requests
   - colorama
-  - emoji
   - os
-  - unidecode
 
 ## FAQ
  Q: Will this lock my account?
