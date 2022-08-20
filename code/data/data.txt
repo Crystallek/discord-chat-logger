@@ -1,0 +1,10 @@
+token=token
+guildsToLog=guilds,lmao
+usersToLog=users,lmao
+
+#examples
+#token=453sad31sad1312sad123132312as
+#guildsToLog=123,456,789
+#usersToLog=Crystallek#3348,suka blyat#6969
+#if you want to log all the members and guilds, set guildsToLog/usersToLog to all (guildsToLog=all)
+#if you want to log dms only, set guildsToLog to dms (guildsToLog=dms)
