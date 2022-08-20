@@ -42,10 +42,10 @@ This is a real-time discord chat logger, where you can have all chats in one pla
  </h6>
 
 ## TODO (in this order)
-  - combine txts into one
-  - setting to allow logging of some accounts only
-  - embed support
-  - better gateway log in on start (it sucks)
+  - combine txts into one - done
+  - setting to allow logging of some accounts only - done
+  - better gateway log in on start (it sucks) - done
+   - embed support
   
   
   
