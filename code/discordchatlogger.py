@@ -75,7 +75,7 @@ def main():
         timeNow = time.strftime("%d.%m.%Y @ %H:%M:%S")
         try: 
             try:
-                if (event['d']['guild_id'] in guilds or guilds[0] == "all") and (event['d']['author']['username'] + "#" + event['d']['author']['discriminator']) in users:
+                if (event['d']['guild_id'] in guilds or guilds[0] == "all") and ((event['d']['author']['username'] + "#" + event['d']['author']['discriminator']) in users or "all" in users):
                     if event['d']['guild_id'] in ids:
                         response  = ids.get(event['d']['guild_id'])
                     else:
@@ -100,7 +100,7 @@ def main():
 
             except:
                 try:
-                    if (event['d']['guild_id'] in guilds or guilds[0] == "all") and (event['d']['author']['username'] + "#" + event['d']['author']['discriminator']) in users:
+                    if (event['d']['guild_id'] in guilds or guilds[0] == "all") and ((event['d']['author']['username'] + "#" + event['d']['author']['discriminator']) in users or "all" in users):
                         try:
                             event['d']['embeds'][0]['fields']
                             print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{event['d']['author']['username']}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}{colorama.Fore.YELLOW}| Embed is not supported at the moment.".replace("\n", ""))
@@ -118,7 +118,7 @@ def main():
                             continue
 
                 except:
-                    if (event['d']['author']['username'] + "#" + event['d']['author']['discriminator']) in users:
+                    if (event['d']['author']['username'] + "#" + event['d']['author']['discriminator']) in users or "all" in users:
                         try:
                             event['d']['embeds'][0]['fields']
                             print(f"{colorama.Fore.BLUE}{response} | {timeNow} | {colorama.Fore.RED}{event['d']['author']['username']}#{event['d']['author']['discriminator']}: {colorama.Fore.RESET}{event['d']['content']}{colorama.Fore.YELLOW}| Embed is not supported at the moment.".replace("\n", ""))
