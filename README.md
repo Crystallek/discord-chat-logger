@@ -32,7 +32,7 @@ This is a real-time discord chat logger, where you can have all chats in one pla
  
  Q: I'm getting error (insert random error here). How do I fix it?
   
- A: This is mainly problem on Discord's end and its rate limits or you entered the wrong token (insert the token without an apostrophe, thanks). Just wait a minute and turn it on again. 
+ A: This is mainly problem on Discord's end and its rate limits or you entered the wrong token (insert the token without an apostrophe, thanks). Just wait a minute and turn it on again. You can try closing Discord and opening chat logger first, it fixes the problem for some reason.
   
  Q: Guild ID filtering doesn't work!
   
